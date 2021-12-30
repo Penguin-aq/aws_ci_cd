@@ -1,5 +1,5 @@
 # aws_ci_cd
-
+1342
 https://docs.github.com/en/actions/learn-github-actions/environment-variables
 
 기본 가상머신지원
