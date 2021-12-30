@@ -31,12 +31,12 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          ls -la
-          echo test >> test
+          ls -la ../
+          echo test >> ../test
           echo "----------------"
-          tail test
+          tail ../test
           echo "----------------"
-          ls -la
+          ls -la ../
       
       - name: Deploy
         uses: appleboy/ssh-action@master
