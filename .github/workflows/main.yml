@@ -45,9 +45,9 @@ jobs:
           ls -la
   
   deploy:
-    name: Multiply by 9
+    name: deploy
     needs: build
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Deliver README.md
         uses: appleboy/scp-action@master
