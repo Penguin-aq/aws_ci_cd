@@ -35,6 +35,8 @@ jobs:
           echo test >> test
           echo "----------------"
           tail test
+          echo "----------------"
+          ls -la
       
       - name: Deploy
         uses: appleboy/ssh-action@master
