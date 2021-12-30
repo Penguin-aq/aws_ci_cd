@@ -28,31 +28,13 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     outputs:
-      ouputName: ${{ steps.stepname.outputs.ouputName }} # 변수 설정
+      ouputName: ${{ steps.v.outputs.ouputName }} # 변수 설정
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    
-      # re run 변수
-#       - name: Previous succeeded job
-#         id: success
-#         uses: actions/cache@v2
-#         with:
-#           path: success-job-${{ github.sha }}-${{ matrix.name }}
-#           key: success-job-job-${{ github.sha }}-${{ matrix.name }}
-      
-      # re run 확인
-#       - name: Composer cache
-#         if: steps.success.outputs.cache-hit != 'true'
-#         uses: actions/cache@v2
-#         with:
-#           path: vendor
-#           key: composer-${{ hashFiles('composer.lock') }}
-      
-#       - run : echo "done" > success-job-${{ github.sha }}-${{ matrix.name }}
-          
+              
       #빌드 스킵변수
       - name: stpsname
-        id: stpsname
+        id: v
         run: |
           echo "::set-output name=ouputName::temp"
           
@@ -65,7 +47,7 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          echo ${{ steps.stepname.outputs.ouputName }}
+          echo ${{ steps.v.outputs.ouputName }}
           mkdir ./temp
           mkdir ./temp/dir
           ls -la 
@@ -86,14 +68,25 @@ jobs:
 #            ./*
 #            !제외
 
+
+#       re run 변수
       - name: Previous succeeded job
-        if: steps.success.outputs.cache-hit != 'true'
         id: success
         uses: actions/cache@v2
         with:
           path: success-job-${{ github.sha }}-${{ matrix.name }}
           key: success-job-job-${{ github.sha }}-${{ matrix.name }}
-          
+      
+      # re run 확인
+      - name: Composer cache
+        if: steps.success.outputs.cache-hit != 'true'
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+      
+#       - run : echo "done" > success-job-${{ github.sha }}-${{ matrix.name }}
+
   deploy:
     name: deploy
     needs: build  # 없으면 동시실행
