@@ -29,11 +29,22 @@ jobs:
       isBuild: ${{ steps.isBuild.outputs.isBuild }} #빌드 스킵변수
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-
+      
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: homework
+          
       #빌드 스킵변수
-      - id: isBuild
+      - name: isBuild
+        id: isBuild
         run: |
+          if [ -e ./temp/dir/${{ env.TEST_FILE_NAME }} ]
+          then 
           echo "::set-output name=isBuild::false"
+          else
+          echo "::set-output name=isBuild::true"
+          fi
           
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: checkout
@@ -69,6 +80,8 @@ jobs:
     name: deploy
     needs: build  # 없으면 동시실행
     runs-on: ubuntu-latest
+    outputs:
+      isBuild: ${{ needs.build.outputs.isBuild }}
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v2
