@@ -27,6 +27,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    
+      - id: isReRun
+        run: |
+          echo "::set-output name=isReRun::Y"
+          echo "::set-output name=aaa::dd"
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: checkout
         uses: actions/checkout@v2
@@ -35,6 +40,8 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+          echo ${{ jobs.build.isReRun.isReRun }}
+          echo ${{ jobs.build.isReRun.aaa }}
           echo ${{ secrets.ENVIRONMENTS_SECRETS }}
           mkdir ./temp
           mkdir ./temp/dir
