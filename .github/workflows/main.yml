@@ -14,7 +14,8 @@ on:
   workflow_dispatch:
 
 env:
-  TEST_FILE_NAME: test_variables                   
+  TEST_FILE_NAME: test_variables
+  AAA: BBBB
   
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -33,6 +34,9 @@ jobs:
       - id: isBuild
         run: |
           echo "::set-output name=isBuild::false"
+          echo ${{ env.AAA }}
+        env:
+          AAA: FFF
           
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: checkout
@@ -45,6 +49,7 @@ jobs:
           echo test, and deploy your project.
           echo ${{ steps.isBuild.outputs.isBuild }}
           echo ${{ secrets.ENVIRONMENTS_SECRETS }}
+          echo ${{ env.AAA }}
           mkdir ./temp
           mkdir ./temp/dir
           ls -la 
@@ -76,6 +81,7 @@ jobs:
           name: homework
       - name: script
         run: |
+          echo ${{ env.AAA }}
           echo "----------------"
           ls -la 
           echo "----------------"
