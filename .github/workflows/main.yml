@@ -2,7 +2,7 @@
 
 name: TEST
 
-concurrency : dev
+concurrency : dev #동시성 부여 동일 환경다중실행 방지
 
 # Controls when the workflow will run
 on:
@@ -32,10 +32,10 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: homework
+#       - name: Download artifact
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: homework
           
       #빌드 스킵변수
       - name: isBuild
