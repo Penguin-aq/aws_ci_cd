@@ -10,4 +10,4 @@ Settings -> secrets -> Actions
 Settings -> Environments
 승인배포 설정
 
-배포테스트
+
