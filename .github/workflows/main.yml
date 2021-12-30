@@ -40,8 +40,8 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          echo ${{ jobs.build.isReRun.isReRun }}
-          echo ${{ jobs.build.isReRun.aaa }}
+          echo ${{ steps.isReRun.outputs.isReRun }}
+          echo ${{ steps.isReRun.outputs.aaa }}
           echo ${{ secrets.ENVIRONMENTS_SECRETS }}
           mkdir ./temp
           mkdir ./temp/dir
