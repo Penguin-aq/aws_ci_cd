@@ -34,9 +34,6 @@ jobs:
       - id: isBuild
         run: |
           echo "::set-output name=isBuild::false"
-          echo ${{ env.AAA }}
-        env:
-          AAA: FFF
           
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: checkout
@@ -48,8 +45,6 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           echo ${{ steps.isBuild.outputs.isBuild }}
-          echo ${{ secrets.ENVIRONMENTS_SECRETS }}
-          echo ${{ env.AAA }}
           mkdir ./temp
           mkdir ./temp/dir
           ls -la 
@@ -81,7 +76,7 @@ jobs:
           name: homework
       - name: script
         run: |
-          echo ${{ env.AAA }}
+          echo ${{ needs.build.outputs.isBuild }}
           echo "----------------"
           ls -la 
           echo "----------------"
@@ -129,6 +124,19 @@ jobs:
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
             echo test >> test
+            
+            
+  deploy_:
+    name: deploy_
+    needs: deploy  # 없으면 동시실행
+    runs-on: ubuntu-latest
+    steps:
+      - name: script
+        run: |
+          echo ${{ needs.build.outputs.isBuild }}
+          echo "----------------"
+          ls -la 
+          echo "----------------"
                        
   deploy_production:
     name: deploy_production
