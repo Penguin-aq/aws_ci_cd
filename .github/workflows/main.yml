@@ -28,41 +28,33 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     outputs:
-      isBuild: ${{ steps.isBuild.outputs.isBuild }} #빌드 스킵변수
+      ouputName: ${{ steps.stepname.outputs.ouputName }} # 변수 설정
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     
-      - name: Previous succeeded job
-        id: success
-        uses: actions/cache@v2
-        with:
-          path: success-job-${{ github.sha }}-${{ matrix.name }}
-          key: success-job-job-${{ github.sha }}-${{ matrix.name }}
-          
-      - name: Composer cache
-        if: steps.success.outputs.cache-hit != 'true'
-        uses: actions/cache@v2
-        with:
-          path: vendor
-          key: composer-${{ hashFiles('composer.lock') }}
-      
-      - run : echo "done" > success-job-${{ github.sha }}-${{ matrix.name }}
-      
-#       - name: Download artifact
-#         uses: actions/download-artifact@v2
+      # re run 변수
+#       - name: Previous succeeded job
+#         id: success
+#         uses: actions/cache@v2
 #         with:
-#           name: homework
+#           path: success-job-${{ github.sha }}-${{ matrix.name }}
+#           key: success-job-job-${{ github.sha }}-${{ matrix.name }}
+      
+      # re run 확인
+#       - name: Composer cache
+#         if: steps.success.outputs.cache-hit != 'true'
+#         uses: actions/cache@v2
+#         with:
+#           path: vendor
+#           key: composer-${{ hashFiles('composer.lock') }}
+      
+#       - run : echo "done" > success-job-${{ github.sha }}-${{ matrix.name }}
           
       #빌드 스킵변수
-      - name: isBuild
-        id: isBuild
+      - name: stpsname
+        id: stpsname
         run: |
-          if [ -e ./temp/dir/${{ env.TEST_FILE_NAME }} ]
-          then 
-          echo "::set-output name=isBuild::false"
-          else
-          echo "::set-output name=isBuild::true"
-          fi
+          echo "::set-output name=ouputName::temp"
           
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: checkout
@@ -73,7 +65,7 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          echo ${{ steps.isBuild.outputs.isBuild }}
+          echo ${{ steps.stepname.outputs.ouputName }}
           mkdir ./temp
           mkdir ./temp/dir
           ls -la 
@@ -93,13 +85,21 @@ jobs:
 #          path: |
 #            ./*
 #            !제외
-  
+
+      - name: Previous succeeded job
+        if: steps.success.outputs.cache-hit != 'true'
+        id: success
+        uses: actions/cache@v2
+        with:
+          path: success-job-${{ github.sha }}-${{ matrix.name }}
+          key: success-job-job-${{ github.sha }}-${{ matrix.name }}
+          
   deploy:
     name: deploy
     needs: build  # 없으면 동시실행
     runs-on: ubuntu-latest
     outputs:
-      isBuild: ${{ needs.build.outputs.isBuild }}
+      ouputName: ${{ needs.build.outputs.ouputName }}
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v2
@@ -107,7 +107,7 @@ jobs:
           name: homework
       - name: script
         run: |
-          echo ${{ needs.build.outputs.isBuild }}
+          echo ${{ needs.build.outputs.ouputName }}
           echo "----------------"
           ls -la 
           echo "----------------"
