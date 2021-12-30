@@ -43,7 +43,7 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          echo ${{ jobs.build.outputs.isBuild }}
+          echo ${{ steps.isBuild.outputs.isBuild }}
           echo ${{ secrets.ENVIRONMENTS_SECRETS }}
           mkdir ./temp
           mkdir ./temp/dir
