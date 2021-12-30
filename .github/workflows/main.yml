@@ -31,6 +31,22 @@ jobs:
       isBuild: ${{ steps.isBuild.outputs.isBuild }} #빌드 스킵변수
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    
+      - name: Previous succeeded job
+        id: success
+        uses: actions/cache@v2
+        with:
+          path: success-job-${{ github.sha }}-${{ matrix.name }}
+          key: success-job-job-${{ github.sha }}-${{ matrix.name }}
+          
+      - name: Composer cache
+        if: steps.success.outputs.cache-hit != 'true'
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+      
+      - run : echo "done" > success-job-${{ github.sha }}-${{ matrix.name }}
       
 #       - name: Download artifact
 #         uses: actions/download-artifact@v2
