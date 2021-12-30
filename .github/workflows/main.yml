@@ -68,7 +68,10 @@ jobs:
 #            ./*
 #            !제외
 
-
+      
+      - run : ${{ steps.success.outputs.cache-hit }}
+      - run : ${{ steps.success.outputs.cache-hit }}
+      
 #       re run 변수
       - name: Previous succeeded job
         id: success
@@ -76,7 +79,7 @@ jobs:
         with:
           path: success-job-${{ github.sha }}-${{ matrix.name }}
           key: success-job-job-${{ github.sha }}-${{ matrix.name }}
-      
+    
       # re run 확인
 #       - name: Composer cache
 #         if: steps.success.outputs.cache-hit != 'true'
@@ -84,6 +87,7 @@ jobs:
 #         with:
 #           path: vendor
 #           key: composer-${{ hashFiles('composer.lock') }}
+      
       
       
       - run : ${{ steps.success.outputs.cache-hit }}
