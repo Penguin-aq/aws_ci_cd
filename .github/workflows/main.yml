@@ -85,6 +85,10 @@ jobs:
 #           path: vendor
 #           key: composer-${{ hashFiles('composer.lock') }}
       
+      
+      - run : ${{ steps.success.outputs.cache-hit }}
+      - run : ${{ steps.success.outputs.cache-hit }}
+      
       - name: tttt
         if: steps.success.outputs.cache-hit == ''
         run : echo "done" > success-job-${{ github.sha }}-${{ matrix.name }}
