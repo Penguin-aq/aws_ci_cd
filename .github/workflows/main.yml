@@ -35,12 +35,12 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          ls -la 
           mkdir ./temp
           mkdir ./temp/dir
+          ls -la 
           echo ${{ github.sha }} >> ./temp/${{ env.TEST_FILE_NAME }}
           echo "----------------"
-          tail ${{ env.TEST_FILE_NAME }}
+          tail ./temp/${{ env.TEST_FILE_NAME }}
           echo "----------------"
           ls -la
   
