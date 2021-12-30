@@ -35,6 +35,7 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+          echo ${{ secrets.ENVIRONMENTS_SECRETS }}
           mkdir ./temp
           mkdir ./temp/dir
           ls -la 
@@ -127,6 +128,7 @@ jobs:
           name: homework
       - name: script
         run: |
+          echo ${{ secrets.ENVIRONMENTS_SECRETS }}
           echo "----------------"
           ls -la 
           echo "----------------"
