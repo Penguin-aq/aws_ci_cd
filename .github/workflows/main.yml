@@ -128,7 +128,9 @@ jobs:
     name: deploy_production
     needs: build  # 없으면 동시실행
     runs-on: ubuntu-latest
-    environment: production #승인배포
+    environment:  #승인배포
+      name: production
+      url: https://github.com
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v2
