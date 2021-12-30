@@ -31,8 +31,16 @@ jobs:
       ouputName: ${{ steps.v.outputs.ouputName }} # 변수 설정
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    
+    #       cache를 제생성하면 cache-hit == 'true' 이다
+      - name: Previous succeeded job
+        id: success
+        uses: actions/cache@v2
+        with:
+          path: success-job-${{ github.sha }}-${{ matrix.name }}
+          key: success-job-job-${{ github.sha }}-${{ matrix.name }}
               
-      #빌드 스킵변수
+      #job변수 전달
       - name: stpsname
         id: v
         run: |
@@ -40,10 +48,11 @@ jobs:
           
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: checkout
-        #if: ${{ jobs.build.outputs.isBuild }}
+        if: steps.success.outputs.cache-hit == ''
         uses: actions/checkout@v2
 
       - name: script
+        if: steps.success.outputs.cache-hit == ''
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
@@ -59,6 +68,7 @@ jobs:
           ls -la
           
       - name: Upload artifact
+        if: steps.success.outputs.cache-hit == ''
         uses: actions/upload-artifact@v2
         with:
           name: homework
@@ -67,35 +77,6 @@ jobs:
 #          path: |
 #            ./*
 #            !제외
-
-      
-      - run : ${{ steps.success.outputs.cache-hit }}
-      - run : ${{ steps.success.outputs.cache-hit }}
-      
-#       re run 변수
-      - name: Previous succeeded job
-        id: success
-        uses: actions/cache@v2
-        with:
-          path: success-job-${{ github.sha }}-${{ matrix.name }}
-          key: success-job-job-${{ github.sha }}-${{ matrix.name }}
-    
-      # re run 확인
-#       - name: Composer cache
-#         if: steps.success.outputs.cache-hit != 'true'
-#         uses: actions/cache@v2
-#         with:
-#           path: vendor
-#           key: composer-${{ hashFiles('composer.lock') }}
-      
-      
-      
-      - run : ${{ steps.success.outputs.cache-hit }}
-      - run : ${{ steps.success.outputs.cache-hit }}
-      
-      - name: tttt
-        if: steps.success.outputs.cache-hit == ''
-        run : echo "done" > success-job-${{ github.sha }}-${{ matrix.name }}
 
   deploy:
     name: deploy
