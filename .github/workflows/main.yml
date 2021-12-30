@@ -85,9 +85,9 @@ jobs:
 #           path: vendor
 #           key: composer-${{ hashFiles('composer.lock') }}
       
-#       - name: tttt
-          if: steps.success.outputs.cache-hit == ''
-          run : echo "done" > success-job-${{ github.sha }}-${{ matrix.name }}
+      - name: tttt
+        if: steps.success.outputs.cache-hit == ''
+        run : echo "done" > success-job-${{ github.sha }}-${{ matrix.name }}
 
   deploy:
     name: deploy
