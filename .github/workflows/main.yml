@@ -113,3 +113,20 @@ jobs:
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
             echo test >> test
+            
+            
+  deploy_production:
+    name: deploy_production
+    needs: build  # 없으면 동시실행
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: homework
+      - name: script
+        run: |
+          echo "----------------"
+          ls -la 
+          echo "----------------"
