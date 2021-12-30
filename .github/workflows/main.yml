@@ -78,14 +78,16 @@ jobs:
           key: success-job-job-${{ github.sha }}-${{ matrix.name }}
       
       # re run 확인
-      - name: Composer cache
-        if: steps.success.outputs.cache-hit != 'true'
-        uses: actions/cache@v2
-        with:
-          path: vendor
-          key: composer-${{ hashFiles('composer.lock') }}
+#       - name: Composer cache
+#         if: steps.success.outputs.cache-hit != 'true'
+#         uses: actions/cache@v2
+#         with:
+#           path: vendor
+#           key: composer-${{ hashFiles('composer.lock') }}
       
-#       - run : echo "done" > success-job-${{ github.sha }}-${{ matrix.name }}
+#       - name: tttt
+          if: steps.success.outputs.cache-hit == ''
+          run : echo "done" > success-job-${{ github.sha }}-${{ matrix.name }}
 
   deploy:
     name: deploy
