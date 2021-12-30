@@ -8,3 +8,5 @@ https://docs.github.com/en/actions/learn-github-actions/environment-variables
 Settings -> secrets -> Actions
 암호화 변수 저장
 
+Settings -> Environments
+승인배포 설정
