@@ -13,6 +13,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  TEST_FILE_NAME: test_variables                   
+  
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -31,14 +35,21 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          ls -la ../
-          echo test >> ../test
+          ls -la 
+          mkdir ./temp
+          mkdir ./temp/dir
+          echo ${{ github.sha }} >> ./temp/${{ env.TEST_FILE_NAME }}
           echo "----------------"
-          tail ../test
+          tail ${{ env.TEST_FILE_NAME }}
           echo "----------------"
-          ls -la ../
-          
-      - name: Deliver File
+          ls -la
+  
+  deploy:
+    name: Multiply by 9
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - name: Deliver README.md
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.REMOTE_IP }}
@@ -48,7 +59,18 @@ jobs:
           source: "README.md"
           target: "github/"
           rm: true
-      
+          
+      - name: Deliver File
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.REMOTE_IP }}
+          username: ${{ secrets.REMOTE_SSH_ID }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          port: ${{ secrets.REMOTE_SSH_PORT }}
+          source: "temp/*"
+          target: "github/"
+          rm: true
+
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
